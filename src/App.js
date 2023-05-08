@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+import { BrowserRouter , Route, Switch, Redirect } from 'react-router-dom'
+import LoginForm from './components/LoginForm'
+import Home from './components/Home'
+import NotFound from './components/NotFound'
+import ProtectedRoute from './components/ProtectedRoute'
+import JobItemDetails from './components/JobItemDetails'
+import Jobs from './components/Jobs'
+import './App.css'
+import Header from './components/Header'
+import { useEffect } from 'react';
+const App = () => {
+  useEffect(() => {
+    console.log('App component mounted')
+  });
+ return( 
+  <BrowserRouter>
+    <Switch>
+      <Route exact path="/login" component={LoginForm} />
+      <Route>
+        <Header />
+        <Switch>
+          <ProtectedRoute exact path="/" component={Home} />
+          <ProtectedRoute exact path="/jobs" component={Jobs} />
+          <ProtectedRoute exact path="/jobs/:id" component={JobItemDetails} />
+          <Route path="/not-found" component={NotFound} />
+          <Redirect to="not-found" />
+        </Switch>
+      </Route>
+    </Switch>
+  </BrowserRouter>
+)
+ }
+export default App
